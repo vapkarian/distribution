@@ -68,18 +68,19 @@ class Window(Tk.Tk):
     def copy_numbers(self, event=None):
         self.numbers = []
         invalid = []
-        for elem in self.clipboard_get().split('\n'):
-            number = filter(lambda x: x.isdigit(), elem)
-            if number.startswith('380'):
-                number = number[3:]
-            elif number.startswith('80'):
-                number = number[2:]
-            elif number.startswith('0'):
-                number = number[1:]
-            if len(number) == 9:
-                self.numbers.append('380' + number)
-            else:
-                invalid.append(elem)
+        for line in self.clipboard_get().split('\n'):
+            for number in line.split(','):
+                number = filter(lambda x: x.isdigit(), number)
+                if number.startswith('380'):
+                    number = number[3:]
+                elif number.startswith('80'):
+                    number = number[2:]
+                elif number.startswith('0'):
+                    number = number[1:]
+                if len(number) == 9:
+                    self.numbers.append('380' + number)
+                else:
+                    invalid.append(line)
         if invalid:
             tkMessageBox.showinfo('Warning', 'These numbers have invalid format: \n' + '\n'.join(invalid))
         self.numbers = list(set(self.numbers))
