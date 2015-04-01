@@ -69,6 +69,8 @@ class Window(Tk.Tk):
         self.numbers = []
         invalid = []
         for line in self.clipboard_get().split('\n'):
+            if not line:
+                continue
             for number in line.split(','):
                 number = filter(lambda x: x.isdigit(), number)
                 if number.startswith('380'):
